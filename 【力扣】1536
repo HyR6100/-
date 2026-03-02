@@ -1,0 +1,32 @@
+拆解问题：
+1. 主对角线以上格子的表示方法是：
+[1,0] [2,0] [2,1]
+对于4x4的矩阵，表示方式为：
+[1,0] [2,0] [3,0] [2,1] [3,1] [3,2]
+[i+1,0]...[n-1,0]...[n-2, n-1]
+
+
+统计每一行的1出现时的列数
+n = len(grid)
+pos = [-1]*n
+for i in range(n):
+    for j in range(n):
+        if grid[i][j] == 1:
+            pos[i] = j
+            break
+
+贪心算法：看看当前该行是否满足，如果不满足，往下找满足的，然后进行交换。这样处理完一行就不用管啦。如果一直没找到，就要返回-1
+res = 0
+for i in range(n):
+    k = -1
+    for j in range(n):
+        if pos[j] <= i:
+            k = j
+            res += j-i
+            break
+    if k != -1:
+        for j in range(k, i, -1):
+            pos[j], pos[j-1] = pos[j-1], pos[j]
+    else:
+        return -1
+return res
